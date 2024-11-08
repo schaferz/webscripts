@@ -184,7 +184,7 @@ function toDuration(sec_num) {
 
     let hours = Math.floor(sec_num / 3600);
     let minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    let seconds = sec_num - (hours * 3600) - (minutes * 60);
+    let seconds = Math.floor(sec_num - (hours * 3600) - (minutes * 60));
     let hasSeconds = seconds > 0;
 
     if (hours < 10) {
@@ -250,7 +250,13 @@ function updateWorklogTable(dates, displayNames, worklogData) {
     for (const username of usernames) {
         const value = Math.round(worklogData.percent[username]);
 
-        percentTr.append(`<td>${value}%</td>`);
+        if (value >= 85) {
+            percentTr.append(`<td style="color: green">${value}%</td>`);
+        } else if (value >= 75) {
+            percentTr.append(`<td style="color: darkorange">${value}%</td>`);
+        } else {
+            percentTr.append(`<td style="color: red">${value}%</td>`);
+        }
     }
 
     body.append(percentTr);
